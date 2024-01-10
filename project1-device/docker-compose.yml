@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  device-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: proiectespring
+      POSTGRES_DB: devices
+    ports:
+      - "5433:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - device_network
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - device_network
+
+  device-microservice:
+    image: backend-device
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://device-db:5432/devices
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: proiectespring
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    ports:
+      - "8081:8081"
+    depends_on:
+      - device-db
+      - rabbitmq
+    networks:
+      - device_network
+    
+volumes:
+  db-data:
+
+networks:
+  device_network:
+    external:
+      name: custom_network2
+

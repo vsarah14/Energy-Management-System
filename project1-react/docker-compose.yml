@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+
+  react:
+    image: frontend-a1
+    ports:
+      - "3000:3000"
+    networks:
+      - custom_network
+
+networks:
+  custom_network:
+    external: true

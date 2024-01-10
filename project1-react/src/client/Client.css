@@ -1,0 +1,46 @@
+.deviceTable {
+    border-collapse: collapse;
+    width: 300px;
+    height:200px;
+}
+
+.deviceTable th, .deviceTable td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.deviceTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.simulationButton {
+    height: 50px;
+    width: 150px;
+}
+
+.buttonDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deviceDiv {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.chatButton {
+    font-size: 20px;
+    background-color: lightgrey;
+    color: black;
+    border: none;
+    cursor: pointer;
+    margin: 3px;
+    width: 300px;
+    height:50px;
+    text-align: center;
+    align-items: center;
+}
+

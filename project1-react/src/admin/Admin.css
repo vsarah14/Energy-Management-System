@@ -1,0 +1,63 @@
+.mainContainer{
+height: 50%;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;}
+
+.dataTable {
+    border-collapse: collapse;
+    width: 300px;
+    height:200px;
+}
+
+.dataTable th, .dataTable td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.dataTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.buttonContainer{
+    display: inline-block;
+    height:60px;
+}
+
+#crudButton {
+    font-size: 20px;
+    background-color: lightgrey;
+    color: black;
+    border: none;
+    cursor: pointer;
+    margin: 3px;
+    width: 100px;
+    height:50px;
+    text-align: center;
+    align-items: center;
+}
+
+#chatButton {
+    font-size: 20px;
+    background-color: lightgrey;
+    color: black;
+    border: none;
+    cursor: pointer;
+    margin: 3px;
+    width: 300px;
+    height:50px;
+    text-align: center;
+    align-items: center;
+}
+
+.line {
+    color: black;
+    width: 100%;
+}
+
+.titleContainer{
+    font-size: 3ch;
+}
+

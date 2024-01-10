@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  user-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: proiectespring
+      POSTGRES_DB: users
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - user_network
+
+  user-microservice:
+    image: backend-user
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/users
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: proiectespring
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
+    ports:
+      - "8080:8080"
+    depends_on:
+      - user-db
+    networks:
+      - user_network
+
+volumes:
+  db-data:
+
+networks:
+  user_network:
+    name: custom_network2
