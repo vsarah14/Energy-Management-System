@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  rabbitmq:
+    image: "rabbitmq:management"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5674:5672"
+      - "15674:15672"
+    networks:
+      - simulator_network
+
+  simulator-microservice:
+    image: backend-simulator
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DEVICE_ID: 2
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5674
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    ports:
+      - "9000:9000"
+    depends_on:
+      - rabbitmq
+    networks:
+      - simulator_network
+    volumes:
+      - C:\Users\voicu\OneDrive\Desktop\DS\device-simulator\sensor.csv:/app/sensor.csv
+    
+  simulator-microservice1:
+    image: backend-simulator
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DEVICE_ID: 1
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5674
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    ports:
+      - "9003:9000"
+    depends_on:
+      - rabbitmq
+    networks:
+      - simulator_network
+    volumes:
+      - C:\Users\voicu\OneDrive\Desktop\DS\device-simulator\sensor.csv:/app/sensor.csv
+volumes:
+  db-data:
+
+networks:
+  simulator_network:
+    external:
+      name: custom_network2
+

@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  monitoring-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: proiectespring
+      POSTGRES_DB: monitoring
+    ports:
+      - "5431:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - monitoring_network
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    networks:
+      - monitoring_network
+
+  monitoring-microservice:
+    image: backend-monitoring
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://monitoring-db:5432/monitoring
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: proiectespring
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5673
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    ports:
+      - "9001:9001"
+    depends_on:
+      - monitoring-db
+      - rabbitmq
+    networks:
+      - monitoring_network
+    
+volumes:
+  db-data:
+
+networks:
+  monitoring_network:
+    external:
+      name: custom_network2
+
